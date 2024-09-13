@@ -76,7 +76,7 @@ public sealed class Plugin : IDalamudPlugin
             // in response to the slash command, just toggle the display status of our main ui
             ToggleMainUI();
         } else if(command == IsLoading){
-            ChatGui.Print("/echo " + IsPlayerZoning().ToString());
+            ChatGui.Print("/echo " + IsPlayerZoning());
         }
     }
 

@@ -1,0 +1,14 @@
+{
+    "Author": "NjalTheKnut",
+    "Name": "Dalamud QoL Cmds",
+    "Punchline": "A QoL tool for Plugin Developers.",
+    "Description": "Current commands are:\n\n/ploading - Returns true if character is between zones, false otherwise.",
+    "ApplicableVersion": "any",
+    "Tags": [
+        "sample",
+        "plugin",
+        "goats",
+        "QoL",
+        "Utility"
+    ]
+}
