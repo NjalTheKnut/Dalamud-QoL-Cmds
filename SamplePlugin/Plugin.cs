@@ -13,6 +13,8 @@ public sealed class Plugin : IDalamudPlugin
     [PluginService] internal static IDalamudPluginInterface PluginInterface { get; private set; } = null!;
     [PluginService] internal static ITextureProvider TextureProvider { get; private set; } = null!;
     [PluginService] internal static ICommandManager CommandManager { get; private set; } = null!;
+    [PluginService] internal static IChatGui ChatGui { get; private set; } = null!;
+    [PluginService] internal static IToastGui ToastGui { get; private set; } = null!;
 
     private const string CommandName = "/pqol";
     private const string IsLoading = "/pLoading";
@@ -64,6 +66,7 @@ public sealed class Plugin : IDalamudPlugin
         MainWindow.Dispose();
 
         CommandManager.RemoveHandler(CommandName);
+        CommandManager.RemoveHandler(IsLoading);
     }
 
     private void OnCommand(string command, string args)
@@ -73,7 +76,7 @@ public sealed class Plugin : IDalamudPlugin
             // in response to the slash command, just toggle the display status of our main ui
             ToggleMainUI();
         } else if(command == IsLoading){
-            IsPlayerZoning().ToString();
+            ChatGui.Print("/echo " + IsPlayerZoning().ToString());
         }
     }
 
