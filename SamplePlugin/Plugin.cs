@@ -1,10 +1,12 @@
-﻿using Dalamud.Game.Command;
+using Dalamud.Game.Command;
 using Dalamud.IoC;
 using Dalamud.Plugin;
 using System.IO;
 using Dalamud.Interface.Windowing;
 using Dalamud.Plugin.Services;
 using SamplePlugin.Windows;
+using FFXIVClientStructs.FFXIV.Client.Game.UI;
+using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 
 namespace SamplePlugin;
 
@@ -14,7 +16,8 @@ public sealed class Plugin : IDalamudPlugin
     [PluginService] internal static ITextureProvider TextureProvider { get; private set; } = null!;
     [PluginService] internal static ICommandManager CommandManager { get; private set; } = null!;
 
-    private const string CommandName = "/pmycommand";
+    private const string CommandName = "/pqol";
+    private const string IsLoading = "/pLoading";
 
     public Configuration Configuration { get; init; }
 
@@ -37,7 +40,12 @@ public sealed class Plugin : IDalamudPlugin
 
         CommandManager.AddHandler(CommandName, new CommandInfo(OnCommand)
         {
-            HelpMessage = "A useful message to display in /xlhelp"
+            HelpMessage = "Config Menu is not currently implemented"
+        });
+
+        CommandManager.AddHandler(IsLoading, new CommandInfo(OnCommand)
+        {
+            HelpMessage = "Returns true if the player is between zones, and false otherwise."
         });
 
         PluginInterface.UiBuilder.Draw += DrawUI;
@@ -62,10 +70,20 @@ public sealed class Plugin : IDalamudPlugin
 
     private void OnCommand(string command, string args)
     {
-        // in response to the slash command, just toggle the display status of our main ui
-        ToggleMainUI();
+        if (command == CommandName)
+        {
+            // in response to the slash command, just toggle the display status of our main ui
+            ToggleMainUI();
+        } else if(command == IsLoading){
+            IsPlayerZoning().ToString();
+        }
     }
 
+
+    public unsafe bool IsPlayerZoning()
+    {
+        return FFXIVClientStructs.FFXIV.Client.Game.Conditions.IsInBetweenAreas;
+    }
     private void DrawUI() => WindowSystem.Draw();
 
     public void ToggleConfigUI() => ConfigWindow.Toggle();
